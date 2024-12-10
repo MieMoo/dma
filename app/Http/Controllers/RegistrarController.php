@@ -7,11 +7,14 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Pulled;
 use App\Models\Transaction;
 use App\Models\Student; 
+use Illuminate\Support\Facades\Auth;
 
 class RegistrarController extends Controller
 {
     public function show(Request $request) 
     { 
+        $user = Auth::user();
+
         $query = $request->input('search');
     
         // Fetch data from the "students" table and apply the search filter
@@ -22,11 +25,18 @@ class RegistrarController extends Controller
                      ->orWhere('studentname', 'LIKE', "%{$query}%"); // Ensure this line ends with a semicolon
         }
     
-        // Retrieve the filtered or full data
-        $studinfos = $studinfos->get();
+        $courses = [];
+        $window = $user->window;
     
-        // Pass data to the "dashboard" view with the search term
-        return view('registrar.dashboard', ['studinfos' => $studinfos, 'search' => $query]);
+        if ($window == 1) {
+            $courses = ['BSIT', 'BSCS', 'BSIE', 'BSCE'];
+        } elseif ($window == 2) {
+            $courses = ['BSREM'];
+        }
+
+        $studinfos = $studinfos->get();
+
+        return view('registrar.dashboard', compact('studinfos', 'user', 'courses'));
     }
 
     public function uploadFile() 

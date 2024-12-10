@@ -197,31 +197,34 @@
     }
 
     input[type="text"] {
-    padding: 8px;
-    border: 1px solid #000000;
-    border-radius: 5px;
-    font-size: 14px;
-    } 
+        padding: 8px;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        font-size: 14px;
+    }
 
     button[type="submit"] {
-    padding: 10px 15px;
-    background-color: #28a745; /* Green color */
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
+        padding: 10px 15px;
+        background-color: #28a745;
+        /* Green color */
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
     }
 
     button[type="submit"]:hover {
-        background-color: #218838; /* Darker green on hover */
+        background-color: #218838;
+        /* Darker green on hover */
     }
 
     /* Ensure both input and button are on the same line */
     form {
         display: flex;
         align-items: center;
-        gap: 10px; /* Add space between input and button */
+        gap: 10px;
+        /* Add space between input and button */
     }
 
     .controls button {
@@ -300,8 +303,8 @@
         }
     }
 
- /* FOR LOGOUT */
- .modal {
+    /* FOR LOGOUT */
+    .modal {
         display: none;
         position: fixed;
         z-index: 1;
@@ -424,17 +427,9 @@
     <header>
         <div class="logo">
             <img src="<?php echo asset('images/LOALOA.png'); ?>" alt="College of Computer Studies" style="height: 50px; width: 50px;">
-            <div class="dropdown">
-                <span id="college-title" class="dropbtn"
-                    style="color: #800000; font-weight: bold; font-size: 20px; cursor: pointer;">Bachelor of Science in
-                    Information Technology</span>
-                <div class="dropdown-content">
-                    <a onclick="changeCourse('Bachelor of Science in Information Technology')">[ - BSIT - ]</a>
-                    <a onclick="changeCourse('Bachelor of Science in Computer Science')">[ - BSCS - ]</a>
-                    <a onclick="changeCourse('Bachelor of Science in Computer Engineering')">[ - BSCE - ]</a>
-                    <a onclick="changeCourse('Bachelor of Science in Industrial Engineering')">[ - BSIE - ]</a>
-                </div>
-            </div>
+            <span id="college-title" class="dropbtn"
+                style="color: #800000; font-weight: bold; font-size: 20px; cursor: pointer;">{{ $user->name }} |
+                Window: {{ $user->window }}</span>
         </div>
         <nav>
             @include('components.layout-nav')
@@ -442,21 +437,21 @@
         </nav>
     </header>
 
-<!-- Modal for logout confirmation -->
-<div id="logoutModal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <img src="{{ asset('images/warning.png') }}" alt="Warning">
-        <h3>Confirmation</h3>
-        <p>Are you sure you want to log off?</p>
-        <form id="logoutForm" method="POST" action="{{ route('logout') }}">
-            @csrf
-            <div class="button-container">
-                <button type="button" class="modal-button yes-button" onclick="confirmLogout()">Yes</button>
-                <button type="button" class="modal-button no-button" onclick="cancelLogout()">No</button>
-            </div>
-        </form>
+    <!-- Modal for logout confirmation -->
+    <div id="logoutModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <img src="{{ asset('images/warning.png') }}" alt="Warning">
+            <h3>Confirmation</h3>
+            <p>Are you sure you want to log off?</p>
+            <form id="logoutForm" method="POST" action="{{ route('logout') }}">
+                @csrf
+                <div class="button-container">
+                    <button type="button" class="modal-button yes-button" onclick="confirmLogout()">Yes</button>
+                    <button type="button" class="modal-button no-button" onclick="cancelLogout()">No</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
 
 
@@ -478,6 +473,13 @@
                 <option value="all">- All Statuses -</option>
                 <option value="accepted">Accepted</option>
                 <option value="rework">Rework</option>
+            </select>
+
+            <label for="course">Course:</label>
+            <select id="course">
+                @foreach ($courses as $course)
+                    <option value="{{ $course }}">{{ $course }}</option>
+                @endforeach
             </select>
 
             <div class="buttons">
@@ -504,14 +506,14 @@
         <div class="right-controls">
             <div class="archive-notification">
                 <button><i class="fas fa-archive"></i> Archive</button>
-             <!--   <div class="notification">
+                <!--   <div class="notification">
                     <i class="fas fa-bell" onclick="showNotificationModal()"></i>
                 </div>-->
             </div>
             <form action="{{ route('registrar.dashboard') }}" method="GET">
-            <input type="text" name="search" placeholder="Search..." value="{{ $search ?? '' }}">
-            <button type="submit">Search</button>
-        </form>
+                <input type="text" name="search" placeholder="Search..." value="{{ $search ?? '' }}">
+                <button type="submit">Search</button>
+            </form>
         </div>
     </div>
 
@@ -530,25 +532,25 @@
         </thead>
         <tbody>
             <tr>
-            @forelse ($studinfos as $studinfo)
-                <td><input type="checkbox"></td>
-                <td>{{$studinfo -> documentname}}</td>
-                <td>{{$studinfo -> studentname}}</td>
-                <td>{{$studinfo ->categ}}</td>
-                <td class="accepted">{{$studinfo -> actions}}</td>
-                <td>{{$studinfo -> descriptions}}</td>
-                <td>{{$studinfo -> uploaders}}</td>
-                <td>{{$studinfo -> created_at}}</td>
+                @forelse ($studinfos as $studinfo)
+                    <td><input type="checkbox"></td>
+                    <td>{{ $studinfo->documentname }}</td>
+                    <td>{{ $studinfo->studentname }}</td>
+                    <td>{{ $studinfo->categ }}</td>
+                    <td class="accepted">{{ $studinfo->actions }}</td>
+                    <td>{{ $studinfo->descriptions }}</td>
+                    <td>{{ $studinfo->uploaders }}</td>
+                    <td>{{ $studinfo->created_at }}</td>
             </tr>
-                @empty
+        @empty
             <tr>
-                    <td colspan="8">No results found.</td>
-                </tr>
-                 @endforelse
+                <td colspan="8">No results found.</td>
+            </tr>
+            @endforelse
         </tbody>
     </table>
 
-    <!-- Notification Section 
+    <!-- Notification Section
     <div id="notificationModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeNotificationModal()">&times;</span>
@@ -558,98 +560,98 @@
     </div>
 </body>
 -->
-<script>
-    function sendNotification() {
-        alert("Notification sent!");
-    }
+    <script>
+        function sendNotification() {
+            alert("Notification sent!");
+        }
 
-// Function to display the logout confirmation modal
-function handleLogout(event) {
-    event.preventDefault(); // Prevent default link behavior
-    document.getElementById('logoutModal').style.display = 'flex'; // Show the modal
-}
+        // Function to display the logout confirmation modal
+        function handleLogout(event) {
+            event.preventDefault(); // Prevent default link behavior
+            document.getElementById('logoutModal').style.display = 'flex'; // Show the modal
+        }
 
-// Function to confirm logout by submitting the form
-function confirmLogout() {
-    document.getElementById('logoutForm').submit(); // Submit the form
-}
+        // Function to confirm logout by submitting the form
+        function confirmLogout() {
+            document.getElementById('logoutForm').submit(); // Submit the form
+        }
 
-// Function to cancel logout and hide the modal
-function cancelLogout() {
-    document.getElementById('logoutModal').style.display = 'none'; // Hide the modal
-}
+        // Function to cancel logout and hide the modal
+        function cancelLogout() {
+            document.getElementById('logoutModal').style.display = 'none'; // Hide the modal
+        }
 
-const fromDate = document.getElementById("fromDate");
-const toDate = document.getElementById("toDate");
+        const fromDate = document.getElementById("fromDate");
+        const toDate = document.getElementById("toDate");
 
-// Update "To" minimum date when "From" date changes
-fromDate.addEventListener("change", () => {
-    toDate.min = fromDate.value;
+        // Update "To" minimum date when "From" date changes
+        fromDate.addEventListener("change", () => {
+            toDate.min = fromDate.value;
 
-    // Auto-correct if "To" date is earlier than "From" date
-    if (toDate.value && toDate.value < fromDate.value) {
-        toDate.value = fromDate.value;
-    }
-});
+            // Auto-correct if "To" date is earlier than "From" date
+            if (toDate.value && toDate.value < fromDate.value) {
+                toDate.value = fromDate.value;
+            }
+        });
 
-// Prevent invalid "To" date selection
-toDate.addEventListener("change", () => {
-    if (toDate.value < fromDate.value) {
-        alert("The 'To' date cannot be earlier than the 'From' date.");
-        toDate.value = fromDate.value;
-    }
-});
-
-
-
-    // Open Notification Modal
-    function openNotificationModal() {
-        document.getElementById("notificationModal").style.display = "block";
-        document.getElementById("modalOverlay").style.display = "block";
-    }
-
-    // Close Notification Modal
-    function closeNotificationModal() {
-        document.getElementById("notificationModal").style.display = "none";
-        document.getElementById("modalOverlay").style.display = "none";
-    }
-
-    // Simulate sending notification
-    function notify() {
-        const staffId = document.getElementById("staffId").value;
-        const subject = document.getElementById("subject").value;
-        const message = document.getElementById("message").value;
-        const notifyIn = document.getElementById("notifyIn").value;
-
-        // Process notification logic here
-
-        alert("Notification Sent!");
-        closeNotificationModal();
-    }
+        // Prevent invalid "To" date selection
+        toDate.addEventListener("change", () => {
+            if (toDate.value < fromDate.value) {
+                alert("The 'To' date cannot be earlier than the 'From' date.");
+                toDate.value = fromDate.value;
+            }
+        });
 
 
-    document.getElementById("searchBar").addEventListener("keyup", function() {
-        var input = document.getElementById("searchBar").value.toLowerCase();
-        var rows = document.getElementById("activityTable").getElementsByTagName("tr");
 
-        for (var i = 0; i < rows.length; i++) {
-            var cells = rows[i].getElementsByTagName("td");
-            var match = false;
+        // Open Notification Modal
+        function openNotificationModal() {
+            document.getElementById("notificationModal").style.display = "block";
+            document.getElementById("modalOverlay").style.display = "block";
+        }
 
-            for (var j = 0; j < cells.length; j++) {
-                if (cells[j].innerHTML.toLowerCase().includes(input)) {
-                    match = true;
-                    break;
+        // Close Notification Modal
+        function closeNotificationModal() {
+            document.getElementById("notificationModal").style.display = "none";
+            document.getElementById("modalOverlay").style.display = "none";
+        }
+
+        // Simulate sending notification
+        function notify() {
+            const staffId = document.getElementById("staffId").value;
+            const subject = document.getElementById("subject").value;
+            const message = document.getElementById("message").value;
+            const notifyIn = document.getElementById("notifyIn").value;
+
+            // Process notification logic here
+
+            alert("Notification Sent!");
+            closeNotificationModal();
+        }
+
+
+        document.getElementById("searchBar").addEventListener("keyup", function() {
+            var input = document.getElementById("searchBar").value.toLowerCase();
+            var rows = document.getElementById("activityTable").getElementsByTagName("tr");
+
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                var match = false;
+
+                for (var j = 0; j < cells.length; j++) {
+                    if (cells[j].innerHTML.toLowerCase().includes(input)) {
+                        match = true;
+                        break;
+                    }
+                }
+
+                if (match) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
                 }
             }
-
-            if (match) {
-                rows[i].style.display = "";
-            } else {
-                rows[i].style.display = "none";
-            }
-        }
-    });
-</script>
+        });
+    </script>
 
 </html>
